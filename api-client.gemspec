@@ -11,5 +11,5 @@ Gem::Specification.new do |s|
     'http://indix.com'
   s.license       = 'MIT'
 	s.add_runtime_dependency 'rest_client',  '~>1.0' 
-	s.add_runtime_dependency 'active_support', '~>4.0'
+	s.add_runtime_dependency 'activesupport', '~>4.0'
 end
