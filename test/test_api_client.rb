@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'api_client'
+require 'mocha/mini_test'
 
 
 class ApiClientTest < Minitest::Unit::TestCase
@@ -31,11 +32,7 @@ class ApiClientTest < Minitest::Unit::TestCase
   end
   
   def test_request
-    @client.instance_eval do
-      def get(path)
-        return ""
-      end
-    end
+    @client.stubs(:get).returns("[]")
     assert_equal(@client.send(:request, 'get', '/all', {}).status_code, 200)
   end
 end

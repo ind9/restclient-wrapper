@@ -3,6 +3,7 @@ require 'exceptions'
 
 require 'rest_client'
 require 'uri'
+require 'hashie'
 require 'active_support'
 
 class ApiClient
@@ -28,7 +29,7 @@ class ApiClient
     begin
       case method
       when 'get'
-        respone = self.get(path)
+        response = self.get(path)
       when 'post'
         response = self.post_or_put(path, data)
       when 'put'
@@ -55,8 +56,8 @@ class ApiClient
       log_request "Error #{e.inspect} while executing #{method} on #{path} with headers : #{@headers} and data : #{data}"
       raise e
     end
-    unless response.blank?
-      response = ::MultiJson.load(response)
+    unless response.nil?
+      response = ::ActiveSupport::JSON.decode(response)
       response = to_hashie(response)
     end
     return format_response(200, 'ok', response)
@@ -109,5 +110,14 @@ class ApiClient
   
   def format_response(status_code, status_message, data = nil)
     return ApiResponseBase.new(status_code, status_message, data)
+  end
+
+
+  def to_hashie json
+    if json.is_a? Array
+      json.collect! { |x| x.is_a?(Hash) ? Hashie::Mash.new(x) : x }
+    else
+      Hashie::Mash.new(json)
+    end
   end
 end
