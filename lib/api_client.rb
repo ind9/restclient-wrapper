@@ -97,9 +97,9 @@ class ApiClient
     return nil if options.nil? or options.empty?
     options = options.collect do |name, value|
       if value.is_a? Array
-        value.collect { |v| "#{name}=#{!v.class == 'Fixnum' ? URI.escape(v) : v}" }.join('&')
+        value.collect { |v| "#{name}=#{!v.class == 'Fixnum' ? escape_string(v.to_s) : v}" }.join('&')
       else
-        "#{name}=#{!value.nil? ? (!value.class == 'Fixnum' ? URI.escape(value) : value) : ''}"
+        "#{name}=#{!value.nil? ? (!value.class == 'Fixnum' ? escape_string(value.to_s) : value) : ''}"
       end
     end.join('&')
   end 
@@ -111,6 +111,12 @@ class ApiClient
   def format_response(status_code, status_message, data = nil)
     return ApiResponseBase.new(status_code, status_message, data)
   end
+  
+  	
+	def escape_string(str)
+		URI.escape(str, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+	end		
+
 
 
   def to_hashie json
