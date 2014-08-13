@@ -88,6 +88,10 @@ class ApiClient
     uri.to_s
   end
 
+	def escape_string(str)
+		URI.escape(str, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+	end
+
   def payload(options)
     return {} if !options.has_key? :request_params
     ::ActiveSupport::JSON.encode(options[:request_params])
@@ -97,11 +101,12 @@ class ApiClient
     return nil if options.nil? or options.empty?
     options = options.collect do |name, value|
       if value.is_a? Array
-        value.collect { |v| "#{name}=#{!v.class == 'Fixnum' ? escape_string(v.to_s) : v}" }.join('&')
+        value.collect { |v| "#{name}=#{v.class.to_s != 'Fixnum' ? escape_string(v.to_s) : v}" }.join('&')
       else
-        "#{name}=#{!value.nil? ? (!value.class == 'Fixnum' ? escape_string(value.to_s) : value) : ''}"
+        "#{name}=#{!value.nil? ? (value.class.to_s != 'Fixnum' ? escape_string(value.to_s) : value) : ''}"
       end
     end.join('&')
+    options
   end 
 
   def format_error(e, method, path, headers, data)
@@ -113,10 +118,6 @@ class ApiClient
   end
   
   	
-	def escape_string(str)
-		URI.escape(str, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
-	end		
-
 
 
   def to_hashie json
