@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'api-client'
-  s.version     = '0.1.0'
+  s.version     = '0.1.1'
   s.date        = '2014-08-12'
   s.summary     = "Rest API wrapper written in ruby. Can be used to communicate to all Indix internal APIs"
   s.description = "Rest API wrapper written in ruby. Can be used to communicate to all Indix internal APIs"
