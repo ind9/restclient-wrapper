@@ -56,7 +56,7 @@ class ApiClient
       log_request "Error #{e.inspect} while executing #{method} on #{path} with headers : #{@headers} and data : #{data}"
       raise e
     end
-    unless response.nil?
+    unless response.empty?
       response = ::ActiveSupport::JSON.decode(response)
       response = to_hashie(response)
     end
