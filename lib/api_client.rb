@@ -64,7 +64,7 @@ class ApiClient
   end
 
   def get(path)
-    RestClient::Request.execute(:method => :get, :url => path, :headers => @headers)
+    RestClient.get(path, @headers)
   end
 
   def post_or_put(path, data)
