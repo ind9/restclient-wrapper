@@ -64,7 +64,7 @@ class ApiClient
   end
 
   def get(path)
-    RestClient.get(path, @headers)
+    RestClient.get(path, headers = @headers)
   end
 
   def post_or_put(path, data)
