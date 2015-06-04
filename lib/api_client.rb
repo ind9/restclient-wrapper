@@ -64,11 +64,11 @@ class ApiClient
   end
 
   def get(path)
-    RestClient::Request.execute(:method => :get, :url => path, :headers => @headers,  :content_type => 'application/json; charset=UTF-8')
+    RestClient::Request.execute(:method => :get, :url => path, :headers => @headers)
   end
 
   def post_or_put(path, data)
-    RestClient::Request.execute(:method => :post, :url => path, :payload => data, :headers => @headers, :content_type => 'application/json; charset=UTF-8')
+    RestClient::Request.execute(:method => :post, :url => path, :payload => data, :headers => @headers)
   end
 
   def delete(path)
