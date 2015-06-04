@@ -88,9 +88,9 @@ class ApiClient
     uri.to_s
   end
 
-	def escape_string(str)
-		URI.escape(str, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
-	end
+  def escape_string(str)
+    URI.escape(str, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+  end
 
   def payload(options)
     return {} if !options.has_key? :request_params
