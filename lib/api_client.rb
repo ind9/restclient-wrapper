@@ -64,7 +64,7 @@ class ApiClient
   end
 
   def get(path)
-    RestClient.get(path, headers = @headers)
+    RestClient.get path, headers = @headers
   end
 
   def post_or_put(path, data)
@@ -84,7 +84,11 @@ class ApiClient
  
   def url(method, path, options = {})
     query_string = build_query(options[:request_params]) if method.eql? 'get'
-    uri = URI::HTTP.build(:host => @host, :port => @port, :path => URI::encode(path), :query => query_string)
+    if @protocol == 'http'
+      uri = URI::HTTP.build(:host => @host, :port => @port, :path => URI::encode(path), :query => query_string)
+    else
+      uri = URI::HTTPS.build(:host => @host, :port => @port, :path => URI::encode(path), :query => query_string)
+    end
     uri.to_s
   end
 
