@@ -22,10 +22,10 @@ class ApiClient
   end
 
   def request(method, path, options = {})
-    start_time = Time.now
     response = data = nil
     path = url(method, path, options)
     data = payload(options) if method != 'get'
+    start_time = Time.now
     begin
       case method
       when 'get'
@@ -56,6 +56,8 @@ class ApiClient
       log_request "Error #{e.inspect} while executing #{method} on #{path} with headers : #{@headers} and data : #{data}"
       raise e
     end
+    time_taken = Time.now - start_time
+    log_request "Method: #{method} Path: #{path} Headers: #{@headers} Data: #{data} Time taken: #{time_taken} ms"
     unless response.empty?
       response = ::ActiveSupport::JSON.decode(response)
       response = to_hashie(response)
