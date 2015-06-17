@@ -31,9 +31,9 @@ class ApiClient
       when 'get'
         response = self.get(path)
       when 'post'
-        response = self.post_or_put(path, data)
+        response = self.post(path, data)
       when 'put'
-        response = self.post_or_put(path, data)
+        response = self.put(path, data)
       when 'delete'
         response = self.delete(path)
       end
@@ -69,8 +69,14 @@ class ApiClient
     RestClient.get path, headers = @headers
   end
 
-  def post_or_put(path, data)
+  def post(path, data)
     RestClient::Request.execute(:method => :post, :url => path, :payload => data, :headers => @headers)
+  end
+
+
+
+  def put(path, data)
+    RestClient::Request.execute(:method => :put, :url => path, :payload => data, :headers => @headers)
   end
 
   def delete(path)
