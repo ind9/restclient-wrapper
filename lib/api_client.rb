@@ -100,7 +100,11 @@ class ApiClient
 
   def payload(options)
     return {} if !options.has_key? :request_params
-    ::ActiveSupport::JSON.encode(options[:request_params])
+    if options.has_key?(:url_encode) && options[:url_encode]
+      return options[:request_params]
+    else
+      return ::ActiveSupport::JSON.encode(options[:request_params])
+    end
   end
   
   def build_query(options)

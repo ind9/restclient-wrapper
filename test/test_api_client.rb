@@ -20,8 +20,9 @@ class ApiClientTest < Minitest::Unit::TestCase
   end
 
   def test_payload()
-    assert_equal(@client.send(:payload, {}), {})
+    assert_equal({}, @client.send(:payload, {}))
     assert_equal("{\"a\":1}", @client.send(:payload, {:request_params => {'a' => 1}}))
+    assert_equal({'a' => 1}, @client.send(:payload, {:request_params => {'a' => 1}, :url_encode => true}))
   end
   
   def test_format_response
