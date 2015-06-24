@@ -66,7 +66,7 @@ class ApiClient
   end
 
   def get(path)
-    RestClient.get path, headers = @headers
+    RestClient.get(path, headers = @headers, :verify_ssl => false)
   end
 
   def post(path, data)
