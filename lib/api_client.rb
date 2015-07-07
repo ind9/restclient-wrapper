@@ -48,18 +48,10 @@ class ApiClient
       raise Conflict.new(JSON.parse(e.http_body)["statusMessage"])
     rescue RestClient::ResourceNotFound => e
       log_request format_error(e, method, path, @headers, data)
-      if e.http_headers['Content-Type'] = 'application/json'
-        raise ResourceNotFound.new(JSON.parse(e.http_body)["statusMessage"])
-      else
-        raise ResourceNotFound.new(e.message)
-      end
+      raise ResourceNotFound.new(e.message)  
     rescue RestClient::Unauthorized => e
       log_request format_error(e, method, path, @headers, data)
-      if e.http_headers['Content-Type'] = 'application/json'
-        raise UnAuthorizedException.new(JSON.parse(e.http_body)["statusMessage"])								
-      else
-        raise UnAuthorizedException.new(e.message)
-      end
+      raise UnAuthorizedException.new(e.message)
     rescue Exception => e
       log_request "Error #{e.inspect} while executing #{method} on #{path} with headers : #{@headers} and data : #{data}"
       raise e
