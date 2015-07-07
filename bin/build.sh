@@ -6,4 +6,4 @@ bundle exec rake
 
 gem build api-client.gemspec
 
-gem inabox --host http://gems.indix.tv:8153/ *gem
+gem inabox -o --host http://gems.indix.tv:8153/ *gem
